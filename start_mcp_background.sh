@@ -4,7 +4,7 @@
 export TNS_ADMIN=/home/ubuntu/wallet-db
 
 echo "Starting DB23ai MCP Server in background..."
-nohup ./sqlcl/bin/sql -mcp ADMIN/"OracleMCPServer@123"@genaidbmcp_high > mcp_server.log 2>&1 &
+nohup /home/ubuntu/adk-rag-mcp/sqlcl/bin/sql -mcp -name mcp_saved > mcp_server.log 2>&1 &
 MCP_PID=$!
 echo $MCP_PID > mcp_server.pid
 
