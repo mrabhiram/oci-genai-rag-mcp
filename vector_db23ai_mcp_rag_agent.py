@@ -15,6 +15,11 @@ from mcp.client.stdio import stdio_client
 from config import load_config, get_sql_injection_safe_query
 
 
+import logging
+
+# Set up logger
+logger = logging.getLogger(__name__)
+
 class VectorDB23aiMCPClient:
     """MCP client for vector search using oci_cohere_rag_search_fixed function"""
     
@@ -142,7 +147,7 @@ END;
                 actual_text = mcp_output
             
             # Process lines from DBMS_OUTPUT
-            lines = actual_text.replace('\\n', '\n').split('\n')
+            lines = actual_text.replace('\n', '\n').split('\n')
             in_result = False
             
             for line in lines:
@@ -193,8 +198,8 @@ END;
                 results.append(current_result)
                         
         except Exception as e:
-            print(f"Vector result parsing error: {e}")
-            print(f"Raw MCP output: {mcp_output[:500]}...")
+            logger.error(f"Vector result parsing error: {e}")
+            logger.debug(f"Raw MCP output: {mcp_output[:500]}...")
         
         return results
     
@@ -287,7 +292,7 @@ END;
             else:
                 actual_text = mcp_output
             
-            lines = actual_text.replace('\\n', '\n').split('\n')
+            lines = actual_text.replace('\n', '\n').split('\n')
             in_stats = False
             
             for line in lines:
@@ -301,7 +306,7 @@ END;
                     stats[key] = value
                     
         except Exception as e:
-            print(f"Stats parsing error: {e}")
+            logger.error(f"Stats parsing error: {e}")
         
         return stats
 
@@ -398,14 +403,14 @@ class VectorDB23aiMCPRAGAgent:
                     tools=self.tools
                 )
                 self.agent.setup()
-                print("OCI GenAI Agent with DB23ai Vector Search setup complete")
+                logger.info("OCI GenAI Agent with DB23ai Vector Search setup complete")
                 return True
             except Exception as e:
-                print(f"Agent setup failed: {e}")
+                logger.error(f"Agent setup failed: {e}")
                 self.agent = None
                 return False
         else:
-            print("Running in simulation mode")
+            logger.info("Running in simulation mode")
             return False
     
     def chat(self, message: str) -> str:
@@ -414,7 +419,7 @@ class VectorDB23aiMCPRAGAgent:
             try:
                 return self.agent.run(message)
             except Exception as e:
-                print(f"Agent error: {e}")
+                logger.error(f"Agent error: {e}")
                 return f"Agent error: {e}"
         else:
             return "Agent not initialized"
@@ -425,7 +430,7 @@ def main():
     agent.setup_agent()
     
     # Example usage
-    print("Vector DB23ai MCP RAG Agent initialized")
+    logger.info("Vector DB23ai MCP RAG Agent initialized")
     
 if __name__ == "__main__":
     main()
