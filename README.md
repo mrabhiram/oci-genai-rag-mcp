@@ -2,9 +2,17 @@
 
 ## Introduction
 
-This comprehensive guide demonstrates how to build a Retrieval-Augmented Generation (RAG) system using Oracle Cloud Infrastructure (OCI) GenAI Agent integrated with Oracle Database 23ai's native vector capabilities through the Model Context Protocol (MCP). The solution leverages DB23ai's built-in DBMS_VECTOR package, OCI's Cohere embedding models, and MCP for secure, standardized database communication.
+Most organizations sit on treasure troves of data locked away in databases, APIs, and legacy systems. Meanwhile, AI agents powered by OCI Generative AI can understand and respond to natural language like never before. The missing piece? Getting these two worlds to work together seamlessly. This is where combining RAG (Retrieval-Augmented Generation) with MCP (Model Context Protocol) gets interesting. Instead of just retrieving documents and summarizing them, your AI agents can now take real action—querying databases, calling APIs, executing workflows—all while staying grounded in your enterprise knowledge.
 
-Unlike traditional approaches that require separate vector databases or direct SQL execution, this solution utilizes DB23ai's enterprise-grade vector capabilities with MCP protocol compliance for secure, scalable database interactions.
+In the Oracle ecosystem, this means your GenAI agents can tap into Oracle Database vector stores, integrate with OCI services, and even work with systems that weren't built for AI. The result? Intelligent agents that don't just know things, but can actually do things.
+Let me show you how to build exactly that...
+
+This comprehensive guide demonstrates how to build a custom Retrieval-Augmented Generation (RAG) system using custom function tools with OCI GenAI Agent, integrated with Oracle Database 23ai's native vector capabilities through the Model Context Protocol (MCP).
+
+Implementation Approach: While Oracle provides excellent native RAG capabilities through OCI GenAI Agents, this implementation showcases the flexibility of using custom function tools to build your own RAG pipeline. This approach is ideal when you need fine-grained control over your vector operations, want to leverage existing Oracle Database 23ai investments, or require custom business logic integration.
+
+The solution leverages DB23ai's built-in DBMS_VECTOR package, OCI's Cohere embedding models, and MCP for secure, standardized database communication. This custom implementation demonstrates how to utilize DB23ai's enterprise-grade vector capabilities with MCP protocol compliance for secure, scalable database interactions—all orchestrated through custom function tools that give you complete architectural control.
+
 
 ## Architecture Overview
 
