@@ -19,6 +19,7 @@ Key components:
 - **DB23ai Vector Store**: Native vector storage with DBMS_VECTOR capabilities
 - **OCI Cohere Embeddings**: Uses cohere.embed-english-v3.0 model (1024 dimensions)
 - **Vector Search Function**: Optimized `oci_cohere_rag_search_fixed` for similarity search
+- **Interactive Demo**: An Interactive demo to test the agent
 
 ## Prerequisites
 
@@ -413,8 +414,364 @@ export VECTOR_DEFAULT_THRESHOLD=0.7
 export MAX_QUERY_LENGTH=2000
 export DEBUG=false
 
-# Test the vector search agent
+# Run the Vector Search agent
 uv run python vector_db23ai_mcp_rag_agent.py
+
+# Test the agent with an interactice ADK client
+uv run python simple_demo.py
+
+Oracle GenAI + DB23ai Vector Search Demo
+==================================================
+Type 'quit' to exit
+
+You: what are your capabilities?
+╭───────────────────────────── Chat request to remote agent: None ─────────────────────────────╮
+│ (Local --> Remote)                                                                           │
+│                                                                                              │
+│ user message:                                                                                │
+│ what are your capabilities?                                                                  │
+│                                                                                              │
+│ performed actions by client:                                                                 │
+│ []                                                                                           │
+│                                                                                              │
+│ session id:                                                                                  │
+│ ocid1.genaiagentsession.oc1.iad.amaaaaaa7mjirbaajpagzxuybcfn33xcfcljlr5rv4g6cfll5pruybbq4bwq │
+╰──────────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────── Chat response from remote agent ──────────────────╮
+│ (Local <-- Remote)                                                  │
+│                                                                     │
+│ agent message:                                                      │
+│ null                                                                │
+│                                                                     │
+│ required actions for client to take:                                │
+│ [                                                                   │
+│     {                                                               │
+│         "action_id": "916346aa-688c-4b61-8e17-50a2ba6b2ec3",        │
+│         "required_action_type": "FUNCTION_CALLING_REQUIRED_ACTION", │
+│         "function_call": {                                          │
+│             "name": "get_vector_db_capabilities",                   │
+│             "arguments": "{}"                                       │
+│         }                                                           │
+│     }                                                               │
+│ ]                                                                   │
+│                                                                     │
+│ guardrail result:                                                   │
+│ None                                                                │
+│                                                                     │
+│                                                                     │
+╰─────────────────────────────────────────────────────────────────────╯
+╭─ Function call requested by agent and mapped local handler function ─╮
+│ Agent function tool name:                                            │
+│ get_vector_db_capabilities                                           │
+│                                                                      │
+│ Agent function tool call arguments:                                  │
+│ {}                                                                   │
+│                                                                      │
+│ Mapped local handler function name:                                  │
+│ get_vector_db_capabilities                                           │
+╰──────────────────────────────────────────────────────────────────────╯
+---------- MCP SERVER STARTUP ----------
+MCP Server started successfully on Mon Aug 18 21:42:06 UTC 2025
+Press Ctrl+C to stop the server
+----------------------------------------
+Aug 18, 2025 9:42:06 PM io.modelcontextprotocol.server.McpAsyncServer$AsyncServerImpl lambda$asyncInitializeRequestHandler$5
+INFO: Client initialize request - Protocol: 2025-06-18, Capabilities: ClientCapabilities[experimental=null, roots=null, sampling=null], Info: Implementation[name=mcp, version=0.1.0]
+Aug 18, 2025 9:42:06 PM io.modelcontextprotocol.server.McpAsyncServer$AsyncServerImpl lambda$asyncInitializeRequestHandler$5
+WARNING: Client requested unsupported protocol version: 2025-06-18, so the server will sugggest the 2024-11-05 version instead
+╭─────────────────────────────────────────────────── Obtained local function execution result ────────────────────────────────────────────────────╮
+│ {'success': True, 'server_type': 'Oracle DB23ai Vector Search via MCP', 'vector_function': 'oci_cohere_rag_search_fixed', 'mcp_tool':           │
+│ 'run-sql', 'capabilities': {'tools_count': 5, 'vector_search': True, 'embedding_generation': True, 'cosine_similarity': True},                  │
+│ 'vector_statistics': {'Total_entries': '10', 'Vector_entries': '10', 'Embedding_model': 'cohere.embed-english-v3.0', 'Vector_dimensions':       │
+│ '1024', 'Distance_metric': 'COSINE', 'Vector_function': 'oci_cohere_rag_search_fixed'}, 'tools': [{'name': 'list-connections', 'description':   │
+│ 'List all available oracle named/saved connections in the connections storage\n\nThe `model` argument should specify only the name and version  │
+│ of the LLM (Large Language Model) you are using, with no additional information.\nThe `mcp_client` argument should specify only the name of the │
+│ MCP (Model Context Protocol) client you are using, with no additional information.\n'}, {'name': 'connect', 'description': 'Provides an         │
+│ interface to connect to a specified database. If a database connection is already active, prompt the user for confirmation before switching to  │
+│ the new connection. If no connection exists, list the available schemas for selection.\nthe connection name is case sensitive\nNote: If the     │
+│ provided connection is invalid or does not match any saved connection, display instructions to the user on how to create a named connection in  │
+│ SQLcl\n\n\nThe `model` argument should specify only the name and version of the LLM (Large Language Model) you are using, with no additional    │
+│ information.\nThe `mcp_client` argument should specify only the name of the MCP (Model Context Protocol) client you are using, with no          │
+│ additional information.\n'}, {'name': 'disconnect', 'description': 'This tool performs a disconnection from the current session in an Oracle    │
+│ database. If a user is connected, it logs out cleanly and returns to the SQL prompt without an active database connection.\n\nThe `model`       │
+│ argument should specify only the name and version of the LLM (Large Language Model) you are using, with no additional information.\nThe         │
+│ `mcp_client` argument should specify only the name of the MCP (Model Context Protocol) client you are using, with no additional                 │
+│ information.\n'}, {'name': 'run-sqlcl', 'description': 'This tool executes SQLcl commands in the SQLcl CLI. If the given command requires a     │
+│ database connection, it prompts the user to connect using the connect tool.\nYou should:\n\n\tExecute the provided SQLcl command.\n\n\tReturn   │
+│ the results.\n\nArgs:\n\n\tsql: The SQLcl command to execute.\n\nReturns:\n\n\tCommand results.\n\n\nThe `model` argument should specify only   │
+│ the name and version of the LLM (Large Language Model) you are using, with no additional information.\nThe `mcp_client` argument should specify │
+│ only the name of the MCP (Model Context Protocol) client you are using, with no additional information.\n'}, {'name': 'run-sql', 'description': │
+│ 'This tool executes SQL queries in an Oracle database. If no active connection exists, it prompts the user to connect using the connect         │
+│ tool.\n\nYou should:\n\n\tExecute the provided SQL query.\n\n\tReturn the results in CSV format.\n\nArgs:\n\n\tsql: The SQL query to            │
+│ execute.\n\n\nThe `model` argument should specify only the name and version of the LLM (Large Language Model) you are using, with no additional │
+│ information.\nThe `mcp_client` argument should specify only the name of the MCP (Model Context Protocol) client you are using, with no          │
+│ additional information.\n\nReturns:\n\n\tCSV-formatted query results.\nFor every SQL query you generate, please include a comment at the        │
+│ beginning of the SELECT statement (or other main SQL command) that identifies the LLM model name and version you are using. Format the comment  │
+│ as: /* LLM in use is  */ and place it immediately after the main SQL keyword.\nFor example:\n\nSELECT /* LLM in use is claude-sonnet-4 */       │
+│ column1, column2 FROM table_name;\nINSERT /* LLM in use is claude-sonnet-4 */ INTO table_name VALUES (...);\nUPDATE /* LLM in use is            │
+│ claude-sonnet-4 */ table_name SET ...;\n\nPlease apply this format consistently to all SQL queries you generate, using your actual model name   │
+│ and version in the comment\n'}]}                                                                                                                │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────────────────────── Chat request to remote agent: None ───────────────────────────────────────────────────────╮
+│ (Local --> Remote)                                                                                                                              │
+│                                                                                                                                                 │
+│ user message:                                                                                                                                   │
+│ null                                                                                                                                            │
+│                                                                                                                                                 │
+│ performed actions by client:                                                                                                                    │
+│ [{'action_id': '916346aa-688c-4b61-8e17-50a2ba6b2ec3', 'performed_action_type': 'FUNCTION_CALLING_PERFORMED_ACTION', 'function_call_output':    │
+│ '{"success": true, "server_type": "Oracle DB23ai Vector Search via MCP", "vector_function": "oci_cohere_rag_search_fixed", "mcp_tool":          │
+│ "run-sql", "capabilities": {"tools_count": 5, "vector_search": true, "embedding_generation": true, "cosine_similarity": true},                  │
+│ "vector_statistics": {"Total_entries": "10", "Vector_entries": "10", "Embedding_model": "cohere.embed-english-v3.0", "Vector_dimensions":       │
+│ "1024", "Distance_metric": "COSINE", "Vector_function": "oci_cohere_rag_search_fixed"}, "tools": [{"name": "list-connections", "description":   │
+│ "List all available oracle named/saved connections in the connections storage\\n\\nThe `model` argument should specify only the name and        │
+│ version of the LLM (Large Language Model) you are using, with no additional information.\\nThe `mcp_client` argument should specify only the    │
+│ name of the MCP (Model Context Protocol) client you are using, with no additional information.\\n"}, {"name": "connect", "description":         │
+│ "Provides an interface to connect to a specified database. If a database connection is already active, prompt the user for confirmation before  │
+│ switching to the new connection. If no connection exists, list the available schemas for selection.\\nthe connection name is case               │
+│ sensitive\\nNote: If the provided connection is invalid or does not match any saved connection, display instructions to the user on how to      │
+│ create a named connection in SQLcl\\n\\n\\nThe `model` argument should specify only the name and version of the LLM (Large Language Model) you  │
+│ are using, with no additional information.\\nThe `mcp_client` argument should specify only the name of the MCP (Model Context Protocol) client  │
+│ you are using, with no additional information.\\n"}, {"name": "disconnect", "description": "This tool performs a disconnection from the current │
+│ session in an Oracle database. If a user is connected, it logs out cleanly and returns to the SQL prompt without an active database             │
+│ connection.\\n\\nThe `model` argument should specify only the name and version of the LLM (Large Language Model) you are using, with no         │
+│ additional information.\\nThe `mcp_client` argument should specify only the name of the MCP (Model Context Protocol) client you are using, with │
+│ no additional information.\\n"}, {"name": "run-sqlcl", "description": "This tool executes SQLcl commands in the SQLcl CLI. If the given command │
+│ requires a database connection, it prompts the user to connect using the connect tool.\\nYou should:\\n\\n\\tExecute the provided SQLcl         │
+│ command.\\n\\n\\tReturn the results.\\n\\nArgs:\\n\\n\\tsql: The SQLcl command to execute.\\n\\nReturns:\\n\\n\\tCommand results.\\n\\n\\nThe   │
+│ `model` argument should specify only the name and version of the LLM (Large Language Model) you are using, with no additional                   │
+│ information.\\nThe `mcp_client` argument should specify only the name of the MCP (Model Context Protocol) client you are using, with no         │
+│ additional information.\\n"}, {"name": "run-sql", "description": "This tool executes SQL queries in an Oracle database. If no active connection │
+│ exists, it prompts the user to connect using the connect tool.\\n\\nYou should:\\n\\n\\tExecute the provided SQL query.\\n\\n\\tReturn the      │
+│ results in CSV format.\\n\\nArgs:\\n\\n\\tsql: The SQL query to execute.\\n\\n\\nThe `model` argument should specify only the name and version  │
+│ of the LLM (Large Language Model) you are using, with no additional information.\\nThe `mcp_client` argument should specify only the name of    │
+│ the MCP (Model Context Protocol) client you are using, with no additional information.\\n\\nReturns:\\n\\n\\tCSV-formatted query results.\\nFor │
+│ every SQL query you generate, please include a comment at the beginning of the SELECT statement (or other main SQL command) that identifies the │
+│ LLM model name and version you are using. Format the comment as: /* LLM in use is  */ and place it immediately after the main SQL               │
+│ keyword.\\nFor example:\\n\\nSELECT /* LLM in use is claude-sonnet-4 */ column1, column2 FROM table_name;\\nINSERT /* LLM in use is             │
+│ claude-sonnet-4 */ INTO table_name VALUES (...);\\nUPDATE /* LLM in use is claude-sonnet-4 */ table_name SET ...;\\n\\nPlease apply this format │
+│ consistently to all SQL queries you generate, using your actual model name and version in the comment\\n"}]}'}]                                 │
+│                                                                                                                                                 │
+│ session id:                                                                                                                                     │
+│ ocid1.genaiagentsession.oc1.iad.amaaaaaa7mjirbaajpagzxuybcfn33xcfcljlr5rv4g6cfll5pruybbq4bwq                                                    │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────────── Chat response from remote agent ────────────────────────────────────────────────────────╮
+│ (Local <-- Remote)                                                                                                                              │
+│                                                                                                                                                 │
+│ agent message:                                                                                                                                  │
+│ {                                                                                                                                               │
+│     "role": "AGENT",                                                                                                                            │
+│     "content": {                                                                                                                                │
+│         "text": "I'm an expert IT support assistant powered by Oracle DB23ai vector search. My capabilities include searching the knowledge     │
+│ base using vector embeddings, retrieving vector database statistics and capabilities, and more. I use the oci_cohere_rag_search_fixed function, │
+│ which performs text embedding using the OCI Cohere embed-english-v3.0 model, vector similarity search with COSINE distance, and ranking by      │
+│ similarity scores. I can provide answers based on similarity scores and rankings, and I include similarity scores to show confidence levels. I  │
+│ reference specific content from the knowledge base and use the vector search function for all queries.",                                        │
+│         "citations": null,                                                                                                                      │
+│         "paragraph_citations": null                                                                                                             │
+│     },                                                                                                                                          │
+│     "time_created": "2025-08-18T21:42:15.050000+00:00"                                                                                          │
+│ }                                                                                                                                               │
+│                                                                                                                                                 │
+│ required actions for client to take:                                                                                                            │
+│ null                                                                                                                                            │
+│                                                                                                                                                 │
+│ guardrail result:                                                                                                                               │
+│ None                                                                                                                                            │
+│                                                                                                                                                 │
+│                                                                                                                                                 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+Error: 'RunResponse' object has no attribute 'get'
+
+You: what model you use to embedd? how many DBs are you connected to?
+╭───────────────────────────── Chat request to remote agent: None ─────────────────────────────╮
+│ (Local --> Remote)                                                                           │
+│                                                                                              │
+│ user message:                                                                                │
+│ what model you use to embedd? how many DBs are you connected to?                             │
+│                                                                                              │
+│ performed actions by client:                                                                 │
+│ []                                                                                           │
+│                                                                                              │
+│ session id:                                                                                  │
+│ ocid1.genaiagentsession.oc1.iad.amaaaaaa7mjirbaaxrixrh2zyhjvcejagxsb6mphewuba7wtpur5l6bfy5jq │
+╰──────────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────────────────────── Chat response from remote agent ──────────────────────────────────────────────────────╮
+│ (Local <-- Remote)                                                                                                                          │
+│                                                                                                                                             │
+│ agent message:                                                                                                                              │
+│ {                                                                                                                                           │
+│     "role": "AGENT",                                                                                                                        │
+│     "content": {                                                                                                                            │
+│         "text": "Your input is lacking necessary details. I am unable to fulfill this request as the functions provided are insufficient.", │
+│         "citations": null,                                                                                                                  │
+│         "paragraph_citations": null                                                                                                         │
+│     },                                                                                                                                      │
+│     "time_created": "2025-08-18T21:43:34.169000+00:00"                                                                                      │
+│ }                                                                                                                                           │
+│                                                                                                                                             │
+│ required actions for client to take:                                                                                                        │
+│ null                                                                                                                                        │
+│                                                                                                                                             │
+│ guardrail result:                                                                                                                           │
+│ None                                                                                                                                        │
+│                                                                                                                                             │
+│                                                                                                                                             │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+Error: 'RunResponse' object has no attribute 'get'
+
+You: what model is used?    
+╭───────────────────────────── Chat request to remote agent: None ─────────────────────────────╮
+│ (Local --> Remote)                                                                           │
+│                                                                                              │
+│ user message:                                                                                │
+│ what model is used?                                                                          │
+│                                                                                              │
+│ performed actions by client:                                                                 │
+│ []                                                                                           │
+│                                                                                              │
+│ session id:                                                                                  │
+│ ocid1.genaiagentsession.oc1.iad.amaaaaaa7mjirbaaypbk5ac6xxzuuageav43pawwg63rbvykvmczo25i6hha │
+╰──────────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────── Chat response from remote agent ──────────────────╮
+│ (Local <-- Remote)                                                  │
+│                                                                     │
+│ agent message:                                                      │
+│ null                                                                │
+│                                                                     │
+│ required actions for client to take:                                │
+│ [                                                                   │
+│     {                                                               │
+│         "action_id": "cc0fce10-2ecf-4885-855a-35bd275ac0a8",        │
+│         "required_action_type": "FUNCTION_CALLING_REQUIRED_ACTION", │
+│         "function_call": {                                          │
+│             "name": "get_vector_db_capabilities",                   │
+│             "arguments": "{}"                                       │
+│         }                                                           │
+│     }                                                               │
+│ ]                                                                   │
+│                                                                     │
+│ guardrail result:                                                   │
+│ None                                                                │
+│                                                                     │
+│                                                                     │
+╰─────────────────────────────────────────────────────────────────────╯
+╭─ Function call requested by agent and mapped local handler function ─╮
+│ Agent function tool name:                                            │
+│ get_vector_db_capabilities                                           │
+│                                                                      │
+│ Agent function tool call arguments:                                  │
+│ {}                                                                   │
+│                                                                      │
+│ Mapped local handler function name:                                  │
+│ get_vector_db_capabilities                                           │
+╰──────────────────────────────────────────────────────────────────────╯
+---------- MCP SERVER STARTUP ----------
+MCP Server started successfully on Mon Aug 18 21:43:51 UTC 2025
+Press Ctrl+C to stop the server
+----------------------------------------
+Aug 18, 2025 9:43:52 PM io.modelcontextprotocol.server.McpAsyncServer$AsyncServerImpl lambda$asyncInitializeRequestHandler$5
+INFO: Client initialize request - Protocol: 2025-06-18, Capabilities: ClientCapabilities[experimental=null, roots=null, sampling=null], Info: Implementation[name=mcp, version=0.1.0]
+Aug 18, 2025 9:43:52 PM io.modelcontextprotocol.server.McpAsyncServer$AsyncServerImpl lambda$asyncInitializeRequestHandler$5
+WARNING: Client requested unsupported protocol version: 2025-06-18, so the server will sugggest the 2024-11-05 version instead
+╭─────────────────────────────────────────────────── Obtained local function execution result ────────────────────────────────────────────────────╮
+│ {'success': True, 'server_type': 'Oracle DB23ai Vector Search via MCP', 'vector_function': 'oci_cohere_rag_search_fixed', 'mcp_tool':           │
+│ 'run-sql', 'capabilities': {'tools_count': 5, 'vector_search': True, 'embedding_generation': True, 'cosine_similarity': True},                  │
+│ 'vector_statistics': {'Total_entries': '10', 'Vector_entries': '10', 'Embedding_model': 'cohere.embed-english-v3.0', 'Vector_dimensions':       │
+│ '1024', 'Distance_metric': 'COSINE', 'Vector_function': 'oci_cohere_rag_search_fixed'}, 'tools': [{'name': 'list-connections', 'description':   │
+│ 'List all available oracle named/saved connections in the connections storage\n\nThe `model` argument should specify only the name and version  │
+│ of the LLM (Large Language Model) you are using, with no additional information.\nThe `mcp_client` argument should specify only the name of the │
+│ MCP (Model Context Protocol) client you are using, with no additional information.\n'}, {'name': 'connect', 'description': 'Provides an         │
+│ interface to connect to a specified database. If a database connection is already active, prompt the user for confirmation before switching to  │
+│ the new connection. If no connection exists, list the available schemas for selection.\nthe connection name is case sensitive\nNote: If the     │
+│ provided connection is invalid or does not match any saved connection, display instructions to the user on how to create a named connection in  │
+│ SQLcl\n\n\nThe `model` argument should specify only the name and version of the LLM (Large Language Model) you are using, with no additional    │
+│ information.\nThe `mcp_client` argument should specify only the name of the MCP (Model Context Protocol) client you are using, with no          │
+│ additional information.\n'}, {'name': 'disconnect', 'description': 'This tool performs a disconnection from the current session in an Oracle    │
+│ database. If a user is connected, it logs out cleanly and returns to the SQL prompt without an active database connection.\n\nThe `model`       │
+│ argument should specify only the name and version of the LLM (Large Language Model) you are using, with no additional information.\nThe         │
+│ `mcp_client` argument should specify only the name of the MCP (Model Context Protocol) client you are using, with no additional                 │
+│ information.\n'}, {'name': 'run-sqlcl', 'description': 'This tool executes SQLcl commands in the SQLcl CLI. If the given command requires a     │
+│ database connection, it prompts the user to connect using the connect tool.\nYou should:\n\n\tExecute the provided SQLcl command.\n\n\tReturn   │
+│ the results.\n\nArgs:\n\n\tsql: The SQLcl command to execute.\n\nReturns:\n\n\tCommand results.\n\n\nThe `model` argument should specify only   │
+│ the name and version of the LLM (Large Language Model) you are using, with no additional information.\nThe `mcp_client` argument should specify │
+│ only the name of the MCP (Model Context Protocol) client you are using, with no additional information.\n'}, {'name': 'run-sql', 'description': │
+│ 'This tool executes SQL queries in an Oracle database. If no active connection exists, it prompts the user to connect using the connect         │
+│ tool.\n\nYou should:\n\n\tExecute the provided SQL query.\n\n\tReturn the results in CSV format.\n\nArgs:\n\n\tsql: The SQL query to            │
+│ execute.\n\n\nThe `model` argument should specify only the name and version of the LLM (Large Language Model) you are using, with no additional │
+│ information.\nThe `mcp_client` argument should specify only the name of the MCP (Model Context Protocol) client you are using, with no          │
+│ additional information.\n\nReturns:\n\n\tCSV-formatted query results.\nFor every SQL query you generate, please include a comment at the        │
+│ beginning of the SELECT statement (or other main SQL command) that identifies the LLM model name and version you are using. Format the comment  │
+│ as: /* LLM in use is  */ and place it immediately after the main SQL keyword.\nFor example:\n\nSELECT /* LLM in use is claude-sonnet-4 */       │
+│ column1, column2 FROM table_name;\nINSERT /* LLM in use is claude-sonnet-4 */ INTO table_name VALUES (...);\nUPDATE /* LLM in use is            │
+│ claude-sonnet-4 */ table_name SET ...;\n\nPlease apply this format consistently to all SQL queries you generate, using your actual model name   │
+│ and version in the comment\n'}]}                                                                                                                │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────────────────────── Chat request to remote agent: None ───────────────────────────────────────────────────────╮
+│ (Local --> Remote)                                                                                                                              │
+│                                                                                                                                                 │
+│ user message:                                                                                                                                   │
+│ null                                                                                                                                            │
+│                                                                                                                                                 │
+│ performed actions by client:                                                                                                                    │
+│ [{'action_id': 'cc0fce10-2ecf-4885-855a-35bd275ac0a8', 'performed_action_type': 'FUNCTION_CALLING_PERFORMED_ACTION', 'function_call_output':    │
+│ '{"success": true, "server_type": "Oracle DB23ai Vector Search via MCP", "vector_function": "oci_cohere_rag_search_fixed", "mcp_tool":          │
+│ "run-sql", "capabilities": {"tools_count": 5, "vector_search": true, "embedding_generation": true, "cosine_similarity": true},                  │
+│ "vector_statistics": {"Total_entries": "10", "Vector_entries": "10", "Embedding_model": "cohere.embed-english-v3.0", "Vector_dimensions":       │
+│ "1024", "Distance_metric": "COSINE", "Vector_function": "oci_cohere_rag_search_fixed"}, "tools": [{"name": "list-connections", "description":   │
+│ "List all available oracle named/saved connections in the connections storage\\n\\nThe `model` argument should specify only the name and        │
+│ version of the LLM (Large Language Model) you are using, with no additional information.\\nThe `mcp_client` argument should specify only the    │
+│ name of the MCP (Model Context Protocol) client you are using, with no additional information.\\n"}, {"name": "connect", "description":         │
+│ "Provides an interface to connect to a specified database. If a database connection is already active, prompt the user for confirmation before  │
+│ switching to the new connection. If no connection exists, list the available schemas for selection.\\nthe connection name is case               │
+│ sensitive\\nNote: If the provided connection is invalid or does not match any saved connection, display instructions to the user on how to      │
+│ create a named connection in SQLcl\\n\\n\\nThe `model` argument should specify only the name and version of the LLM (Large Language Model) you  │
+│ are using, with no additional information.\\nThe `mcp_client` argument should specify only the name of the MCP (Model Context Protocol) client  │
+│ you are using, with no additional information.\\n"}, {"name": "disconnect", "description": "This tool performs a disconnection from the current │
+│ session in an Oracle database. If a user is connected, it logs out cleanly and returns to the SQL prompt without an active database             │
+│ connection.\\n\\nThe `model` argument should specify only the name and version of the LLM (Large Language Model) you are using, with no         │
+│ additional information.\\nThe `mcp_client` argument should specify only the name of the MCP (Model Context Protocol) client you are using, with │
+│ no additional information.\\n"}, {"name": "run-sqlcl", "description": "This tool executes SQLcl commands in the SQLcl CLI. If the given command │
+│ requires a database connection, it prompts the user to connect using the connect tool.\\nYou should:\\n\\n\\tExecute the provided SQLcl         │
+│ command.\\n\\n\\tReturn the results.\\n\\nArgs:\\n\\n\\tsql: The SQLcl command to execute.\\n\\nReturns:\\n\\n\\tCommand results.\\n\\n\\nThe   │
+│ `model` argument should specify only the name and version of the LLM (Large Language Model) you are using, with no additional                   │
+│ information.\\nThe `mcp_client` argument should specify only the name of the MCP (Model Context Protocol) client you are using, with no         │
+│ additional information.\\n"}, {"name": "run-sql", "description": "This tool executes SQL queries in an Oracle database. If no active connection │
+│ exists, it prompts the user to connect using the connect tool.\\n\\nYou should:\\n\\n\\tExecute the provided SQL query.\\n\\n\\tReturn the      │
+│ results in CSV format.\\n\\nArgs:\\n\\n\\tsql: The SQL query to execute.\\n\\n\\nThe `model` argument should specify only the name and version  │
+│ of the LLM (Large Language Model) you are using, with no additional information.\\nThe `mcp_client` argument should specify only the name of    │
+│ the MCP (Model Context Protocol) client you are using, with no additional information.\\n\\nReturns:\\n\\n\\tCSV-formatted query results.\\nFor │
+│ every SQL query you generate, please include a comment at the beginning of the SELECT statement (or other main SQL command) that identifies the │
+│ LLM model name and version you are using. Format the comment as: /* LLM in use is  */ and place it immediately after the main SQL               │
+│ keyword.\\nFor example:\\n\\nSELECT /* LLM in use is claude-sonnet-4 */ column1, column2 FROM table_name;\\nINSERT /* LLM in use is             │
+│ claude-sonnet-4 */ INTO table_name VALUES (...);\\nUPDATE /* LLM in use is claude-sonnet-4 */ table_name SET ...;\\n\\nPlease apply this format │
+│ consistently to all SQL queries you generate, using your actual model name and version in the comment\\n"}]}'}]                                 │
+│                                                                                                                                                 │
+│ session id:                                                                                                                                     │
+│ ocid1.genaiagentsession.oc1.iad.amaaaaaa7mjirbaaypbk5ac6xxzuuageav43pawwg63rbvykvmczo25i6hha                                                    │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────── Chat response from remote agent ───────────────────────────╮
+│ (Local <-- Remote)                                                                   │
+│                                                                                      │
+│ agent message:                                                                       │
+│ {                                                                                    │
+│     "role": "AGENT",                                                                 │
+│     "content": {                                                                     │
+│         "text": "The model used is cohere.embed-english-v3.0 with 1024 dimensions.", │
+│         "citations": null,                                                           │
+│         "paragraph_citations": null                                                  │
+│     },                                                                               │
+│     "time_created": "2025-08-18T21:43:58.584000+00:00"                               │
+│ }                                                                                    │
+│                                                                                      │
+│ required actions for client to take:                                                 │
+│ null                                                                                 │
+│                                                                                      │
+│ guardrail result:                                                                    │
+│ None                                                                                 │
+│                                                                                      │
+│                                                                                      │
+╰──────────────────────────────────────────────────────────────────────────────────────╯
+
 ```
 
 ## Key Technical Features
